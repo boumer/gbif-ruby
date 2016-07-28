@@ -1,0 +1,10 @@
+################
+##### TODO #####
+################
+
+1. Finish documenting API routes for Dataset API and others under Registry.
+2. Same for Occurrence API.
+3. Add test for route generator and client functionality.
+4. Add simple generalized tests that can roughly cover all routes.
+5. Flush out README with some good usage examples and resources.
+6. Ensure updated with Rubygems.

@@ -1,7 +1,7 @@
-class RouteGenerator
+class GBIF::RouteGenerator
   # Defines a method on the specified class that facilitates an API call.
   def self.generate(klass, route)
-    klass.define_method(route[:name]) do |opts|
+    klass.send(:define_method, route[:name]) do |opts = {}|
       # Generate the URL path after ensuring we have the necessary parameters.
       path = route[:url]
       (route[:required_params] || []).each do |param|
@@ -10,8 +10,8 @@ class RouteGenerator
         end
         path.gsub!("{{#{param}}}", opts[param])
       end
-      opts = opts.except(route[:required_params].keys)
-      url = ROOT_URL + path
+      (route[:required_params] || []).each { |p| opts.delete(p) }
+      url = GBIF::ROOT_URL + path
 
       # Options for handling the request.
       client_options = {
@@ -31,7 +31,7 @@ class RouteGenerator
       end
 
       # Make the request and return the result.
-      client.send(route[:method].downcase, ROOT_URL + path, client_options, request_params)
+      client.send(route[:method].downcase, GBIF::ROOT_URL + path, client_options, route[:optional_params])
     end
   end
 end
